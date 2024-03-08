@@ -125,7 +125,7 @@ export const Shop = () => {
               backgroundColor: 'aqua',
               width: '100%',
               minHeight: 800,
-              overflow: 'scroll',
+              overflow: 'auto',
             }}
           >
             <Box sx={{ display: 'flex', flexDirection: 'row' }}>

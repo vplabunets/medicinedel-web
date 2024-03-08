@@ -17,6 +17,7 @@ export const History = () => {
     }
   }, [data, query]);
 
+  console.log(orders);
   const handleQueryChange = (event) => {
     setQuery(event.target.value);
   };
@@ -71,7 +72,9 @@ export const History = () => {
                     }}
                   >
                     <HistoryOrder orderList={order.orderList} />
-                    <Typography sx={{ marginTop: 'auto', marginBottom: 'auto', marginLeft: 1 }}>Total price</Typography>
+                    <Typography sx={{ marginTop: 'auto', marginBottom: 'auto', marginLeft: 1 }}>
+                      Total price: {order.totalPrice}
+                    </Typography>
                   </Box>
                 );
               })}
