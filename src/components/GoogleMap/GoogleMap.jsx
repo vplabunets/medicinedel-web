@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import PropTypes from 'prop-types';
@@ -35,20 +35,10 @@ const mapDefaultOptions = {
   fullscreenControl: false,
 };
 
-export const GoogleMapAddressSelector = ({ formik, shop }) => {
+export const GoogleMapAddressSelector = ({ formik }) => {
   const [mapCenter, setMapCenter] = useState({ lat: 46.57308553455599, lng: 30.801090654291457 });
   const [markerPosition, setMarkerPosition] = useState(null);
 
-  let shopInfo;
-  let shopMarker;
-  useEffect(() => {
-    if (shop) {
-      shopInfo = shopDefaultCoords.find((item) => {
-        return item.shop === shop;
-      });
-      shopMarker = { lat: shopInfo.lat, lng: shopInfo.lng };
-    }
-  }, []);
   const reverseGeocode = (lat, lng) => {
     return new Promise((resolve, reject) => {
       const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
@@ -86,14 +76,12 @@ export const GoogleMapAddressSelector = ({ formik, shop }) => {
 
     try {
       const localityName = await reverseGeocode(lat, lng);
-      console.log({ lat, lng });
       await formik.setFieldValue('address', localityName);
     } catch (error) {
       console.error('Error getting locality name:', error);
     }
   };
 
-  console.log(markerPosition);
   return (
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
       <GoogleMap
@@ -124,7 +112,7 @@ export const GoogleMapAddressSelector = ({ formik, shop }) => {
         }}
       >
         {markerPosition && <Marker position={markerPosition} />}
-        {shopMarker && <Marker position={shopMarker} />}
+        <Marker position={{ lat: shopDefaultCoords[0].lat, lng: shopDefaultCoords[0].lng }} />
       </GoogleMap>
     </LoadScript>
   );
@@ -132,10 +120,8 @@ export const GoogleMapAddressSelector = ({ formik, shop }) => {
 
 GoogleMapAddressSelector.propTypes = {
   formik: PropTypes.object.isRequired,
-  shop: PropTypes.string.isRequired,
 };
 
 GoogleMapAddressSelector.defaultProps = {
   formik: null,
-  shop: null,
 };

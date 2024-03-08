@@ -33,7 +33,6 @@ const initialValues = {
 
 export const ShoppingCart = () => {
   const [medicines, setMedicines] = useState(null);
-  const [shop, setShop] = useState(null);
   const dispatch = useDispatch();
   const { data, isLoading } = useGetItemsQuery();
   const [placeOrder, { isLoading: isUpdating }, error] = usePlaceOrderMutation();
@@ -49,7 +48,6 @@ export const ShoppingCart = () => {
           }
         }
       });
-      setShop(displayCartArray[0].shop);
       setMedicines(displayCartArray);
 
       formik.setValues({ ...formik.values, orderList: selectedCart });
@@ -125,7 +123,7 @@ export const ShoppingCart = () => {
             }}
           >
             <Box sx={{ width: '100%', height: 300 }}>
-              {shop && <GoogleMapAddressSelector formik={formik} shop={shop} />}
+              <GoogleMapAddressSelector formik={formik} />
             </Box>
             <FormInput
               name='name'
