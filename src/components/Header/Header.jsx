@@ -1,7 +1,7 @@
 import { Box } from '@mui/system';
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { List, Button } from '@mui/material';
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Tabs, Tab } from '@mui/material';
 
 const linksData = [
   { id: 1, to: '', name: 'shop' },
@@ -11,33 +11,17 @@ const linksData = [
 ];
 
 export const Header = () => {
-  const [activeLink, setActiveLink] = useState('');
+  const location = useLocation();
 
-  const handleClick = (to) => {
-    setActiveLink(to);
-  };
+  const defaultTabValue = '/';
 
   return (
     <Box sx={{ padding: 1, backgroundColor: 'lightgrey' }}>
-      <List>
+      <Tabs value={location.pathname !== '/' && location.pathname} defaultValue={defaultTabValue}>
         {linksData.map(({ id, to, name }) => {
-          return (
-            <Button
-              key={id}
-              component={Link}
-              to={`/${to}`}
-              sx={{
-                '&:focus, &:active': {
-                  backgroundColor: activeLink === to ? 'lightblue' : 'inherit',
-                },
-              }}
-              onClick={() => handleClick(to)}
-            >
-              {name}
-            </Button>
-          );
+          return <Tab key={id} label={name} component={Link} value={`/${to}`} to={`/${to}`} />;
         })}
-      </List>
+      </Tabs>
     </Box>
   );
 };
