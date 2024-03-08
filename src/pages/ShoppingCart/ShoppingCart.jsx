@@ -41,7 +41,6 @@ export const ShoppingCart = () => {
 
   useEffect(() => {
     if (data) {
-      console.log(data[0].shop);
       const displayCartArray = selectedCart.map((cartItem) => {
         if (data) {
           const foundItem = data.find((item) => item._id === cartItem.medicineId);
@@ -126,7 +125,7 @@ export const ShoppingCart = () => {
             }}
           >
             <Box sx={{ width: '100%', height: 300 }}>
-              <GoogleMapAddressSelector formik={formik} shop={shop} />
+              {shop && <GoogleMapAddressSelector formik={formik} shop={shop} />}
             </Box>
             <FormInput
               name='name'
