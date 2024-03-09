@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import logger from 'redux-logger';
+// import logger from 'redux-logger'; //for development
 
 import { FLUSH, PAUSE, PERSIST, persistStore, persistReducer, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -23,9 +23,8 @@ export const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     })
-      .concat(logger)
+      // .concat(logger)// for development
       .concat(medicinedelAPI.middleware),
-  // devTools: process.env.NODE_ENV === 'development', //Only for development mode
 });
 
 export const persistor = persistStore(store);

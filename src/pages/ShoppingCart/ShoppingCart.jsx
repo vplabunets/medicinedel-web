@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 import FormInput from '../../components/FormInput/FormInput';
 import { getCart } from '../../store/cart/cartSelectors';
@@ -10,6 +11,7 @@ import { useGetItemsQuery, usePlaceOrderMutation } from '../../store/services/me
 import { cleanCart } from '../../store/cart/cartReducer';
 import OrderList from '../../components/OrderList/OrderList';
 import { GoogleMapAddressSelector } from '../../components/GoogleMap/GoogleMap';
+import EuroIcon from '@mui/icons-material/Euro';
 
 export const cartSchema = Yup.object().shape({
   name: Yup.string().min(2, 'Name is too short').max(50, 'Name is too long').required('Name is required'),
@@ -35,8 +37,9 @@ export const ShoppingCart = () => {
   const [medicines, setMedicines] = useState(null);
   const dispatch = useDispatch();
   const { data, isLoading } = useGetItemsQuery();
-  const [placeOrder, { isLoading: isUpdating }, error] = usePlaceOrderMutation();
+  const [placeOrder, { isLoading: isUpdating }] = usePlaceOrderMutation();
   const selectedCart = useSelector(getCart);
+  const theme = useTheme();
 
   useEffect(() => {
     if (data) {
@@ -55,7 +58,6 @@ export const ShoppingCart = () => {
   }, [data, selectedCart]);
   const onSubmit = (values, { resetForm }) => {
     alert(JSON.stringify(values, null, 2));
-    console.log(error);
     placeOrder({ ...values, totalPrice: calculateTotalPrice(medicines, formik.values.orderList) });
     dispatch(cleanCart());
     resetForm();
@@ -77,7 +79,6 @@ export const ShoppingCart = () => {
       }
     }, 0);
   };
-
   return selectedCart.length === 0 ? (
     <Typography
       sx={{
@@ -95,7 +96,10 @@ export const ShoppingCart = () => {
       <CircularProgress />
     </Box>
   ) : (
-    <form onSubmit={formik.handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+    <form
+      onSubmit={formik.handleSubmit}
+      style={{ display: 'flex', flexDirection: 'column', width: '100%', maxHeight: 800, overflow: 'auto' }}
+    >
       <Box
         sx={{
           display: 'flex',
@@ -205,29 +209,46 @@ export const ShoppingCart = () => {
           </Box>
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', alignSelf: 'end', marginTop: 1, padding: 2 }}>
-        <Typography
-          sx={{
-            display: 'inline-block',
-            marginTop: 'auto',
-            marginBottom: 'auto',
-            marginRight: 4,
-          }}
-        >
-          Total price:
-        </Typography>
-        <Typography
-          sx={{
-            marginRight: 4,
-            display: 'inline-block',
-            marginTop: 'auto',
-            marginBottom: 'auto',
-          }}
-        >
-          {formik.values.orderList.length && medicines && calculateTotalPrice(medicines, formik.values.orderList)}
-        </Typography>
-        <Button variant='outlined' type='submit' sx={{ width: 160, alignSelf: 'end' }}>
-          {isUpdating ? <CircularProgress /> : 'Submit'}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          alignSelf: 'end',
+          marginTop: 1,
+          padding: 2,
+          borderRadius: 2,
+          border: 1,
+          borderColor: theme.palette.primary.main,
+          backgroundColor: theme.palette.grey['100'],
+        }}
+      >
+        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+          <Typography
+            variant='h4'
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              marginRight: 4,
+            }}
+          >
+            Total price:
+          </Typography>
+          <Typography
+            variant='h5'
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              marginRight: 4,
+            }}
+          >
+            {formik.values.orderList.length && medicines && calculateTotalPrice(medicines, formik.values.orderList)}
+            <EuroIcon sx={{ height: '30px', marginLeft: '2px' }} />
+          </Typography>
+        </Box>
+        <Button variant='contained' type='submit' sx={{ width: 160, alignSelf: 'end' }}>
+          {isUpdating ? <CircularProgress /> : 'Checkout'}
         </Button>
       </Box>
     </form>

@@ -1,8 +1,16 @@
-import React from 'react'
+import React from 'react';
+import { Box, Typography } from '@mui/material';
 
 export const Coupons = () => {
   return (
-    <div>Coupons</div>
-  )
-}
- 
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Typography>This page is under development</Typography>
+    </Box>
+  );
+};

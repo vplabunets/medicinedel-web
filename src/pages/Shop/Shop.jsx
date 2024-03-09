@@ -122,7 +122,6 @@ export const Shop = () => {
           <Box
             sx={{
               padding: 2,
-              backgroundColor: 'aqua',
               width: '100%',
               minHeight: 800,
               overflow: 'auto',

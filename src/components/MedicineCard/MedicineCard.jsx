@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { Card, CardActions, CardContent, CardMedia, Tooltip, IconButton, Typography, Button } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import EuroIcon from '@mui/icons-material/Euro';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 import { useUpdateItemMutation } from '../../store/services/medicinedelAPI';
 import { useDispatch } from 'react-redux';
@@ -27,10 +29,11 @@ export function MedicineCard({ medicine }) {
       <Card sx={{ padding: 1, maxWidth: 345 }}>
         <CardMedia component='img' alt='alt description' height='140' image={medicine.url} />
         <CardContent>
-          <Typography gutterBottom variant='h5' component='div'>
-            {medicine.title}
+          <Typography variant='h5'>{medicine.title}</Typography>
+          <Typography sx={{ display: 'flex', alignItems: 'center' }}>
+            {medicine.price}
+            <EuroIcon sx={{ height: '20px', marginLeft: '2px' }} />
           </Typography>
-          {medicine.price}
         </CardContent>
         <CardActions sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Button
@@ -39,7 +42,7 @@ export function MedicineCard({ medicine }) {
             sx={{ alignSelf: 'flex-end' }}
             onClick={() => handleAddToCart(medicine._id)}
           >
-            add to Cart
+            add to Cart <AddShoppingCartIcon sx={{ marginLeft: '2px' }} />
           </Button>
           <Tooltip title='Add to favorites' arrow>
             <IconButton color='primary' onClick={() => handleFavorites()}>

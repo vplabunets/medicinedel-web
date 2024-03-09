@@ -1,6 +1,9 @@
 import React from 'react';
 import { Button, Card, CardContent, CardMedia, OutlinedInput, Tooltip, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
+import EuroIcon from '@mui/icons-material/Euro';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { useTheme } from '@mui/material/styles';
 
 export const OrderItem = ({
   item,
@@ -13,17 +16,19 @@ export const OrderItem = ({
   removeHandler,
   changeQuantityHandler,
 }) => {
+  const theme = useTheme();
   return (
     <Card key={item._id} sx={{ display: 'flex', marginBottom: 1, marginRight: 1, padding: 1, minWidth: 345 }}>
       <CardMedia component='img' alt='alt description' height='140' image={item.url} />
       <CardContent>
-        <Typography sx={{ marginBottom: 1 }}>{item.title}</Typography>
+        <Typography variant='h5' sx={{ marginBottom: 1 }}>
+          {item.title}
+        </Typography>
         <OutlinedInput
           sx={{ height: 40, marginBottom: 1 }}
           name={`quantity[${index}]`}
           value={initialValue}
           onChange={(event) => {
-            console.log(event);
             let newValue = parseInt(event.target.value);
             if (newValue < 0 || isNaN(newValue)) {
               newValue = 0;
@@ -35,29 +40,32 @@ export const OrderItem = ({
                 const updatedItem = { ...itemToUpdate, quantity: newValue };
                 const updatedListWithoutItem = updatedList.filter((element) => element.medicineId !== item._id);
                 const updatedListWithUpdatedItem = [...updatedListWithoutItem, updatedItem];
-                console.log('first', newValue);
                 changeQuantityHandler({ medicineId: item._id, quantity: newValue });
                 formikFieldValueHandler('orderList', updatedListWithUpdatedItem);
               }
             } else {
-              console.log('second', newValue);
-
               updatedList.push({
                 medicineId: item._id,
                 quantity: newValue,
               });
-
               formikFieldValueHandler('orderList', updatedList);
             }
           }}
           onBlur={blurHandler}
           inputProps={{ type: 'number' }}
         />
-        <Typography sx={{ textAlign: 'center' }}>Unit price {item.price}</Typography>
+        <Typography sx={{ display: 'flex', alignItems: 'center' }}>
+          Price {item.price}
+          <EuroIcon sx={{ height: '20px', marginLeft: '2px' }} />
+        </Typography>
       </CardContent>
       <Tooltip title='Remove item from cart'>
-        <Button type='button' onClick={() => removeHandler({ medicineId: item._id })}>
-          x
+        <Button
+          sx={{ backgroundColor: theme.palette.grey['100'] }}
+          type='button'
+          onClick={() => removeHandler({ medicineId: item._id })}
+        >
+          <DeleteForeverIcon sx={{ width: '30px', marginLeft: '2px' }} />
         </Button>
       </Tooltip>
     </Card>
@@ -78,4 +86,13 @@ OrderItem.propTypes = {
 };
 OrderItem.defaultProps = {
   medicine: null,
+  item: null,
+  initialValue: null,
+  index: null,
+  selectedItem: null,
+  formikOrderList: null,
+  formikFieldValueHandler: null,
+  blurHandler: null,
+  removeHandler: null,
+  changeQuantityHandler: null,
 };

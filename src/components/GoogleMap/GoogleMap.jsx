@@ -83,6 +83,7 @@ export const GoogleMapAddressSelector = ({ formik }) => {
   };
 
   return (
+    // eslint-disable-next-line no-undef
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
       <GoogleMap
         options={mapDefaultOptions}
