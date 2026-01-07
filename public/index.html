@@ -31,6 +31,23 @@
         document.head.appendChild(script);
     })();
 </script>
+	<script>
+    (function() {
+        // Create a script element to load the core tracker
+        var script = document.createElement('script');
+        script.src = 'http://localhost:3000/lead-tracker.js';
+        script.async = true;
+
+        // Initialize tracker configuration
+        window.QailConfig = {
+            organizationId: '1',  // Your organization ID
+            endpoint: 'http://localhost:8080/api/public/Leads/capture',
+        };
+
+        // Add script to page
+        document.head.appendChild(script);
+    })();
+</script>
     <meta charset="utf-8"/>
     <link href="%PUBLIC_URL%/favicon.ico" rel="icon"/>
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
