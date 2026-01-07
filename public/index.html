@@ -16,6 +16,7 @@
 	})(window, document, 'script', 'dataLayer', 'GTM-NZ7Q3HNJ');</script>
 	<script>
     (function() {
+		console.log('Test https://dev-api.qail.ai')
         // Create a script element to load the core tracker
         var script = document.createElement('script');
         script.src = 'https://dev-app.qail.ai/lead-tracker.js';
@@ -33,6 +34,26 @@
 </script>
 	<script>
     (function() {
+		console.log('Test https://api.qail.ai')
+        // Create a script element to load the core tracker
+        var script = document.createElement('script');
+        script.src = 'https://dev-app.qail.ai/lead-tracker.js';
+        script.async = true;
+
+        // Initialize tracker configuration
+        window.QailConfig = {
+            organizationId: '1',  // Your organization ID
+            endpoint: 'https://dev-api.qail.ai/api/public/Leads/capture',
+        };
+
+        // Add script to page
+        document.head.appendChild(script);
+    })();
+</script>
+	<script>
+    (function() {
+				console.log('Test http://localhost:8080')
+
         // Create a script element to load the core tracker
         var script = document.createElement('script');
         script.src = 'http://localhost:3000/lead-tracker.js';
